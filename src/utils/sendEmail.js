@@ -1,20 +1,21 @@
 import nodemailer from "nodemailer";
+import config from "../config/config.js";
 
 const sendEmail = async function (email, subject, message) {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT,
-        secure: process.env.SMTP_PORT == 465, // <-- Set secure based on port
+        host: config.smtpHost,
+        port: config.smtpPort,
+        secure: config.smtpPort == 465, 
         auth: {
-            user: process.env.SMTP_USERNAME,
-            pass: process.env.SMTP_PASSWORD,
+            user: config.smtpUsername,
+            pass: config.smtpPassword,
         },
     });
 
     // send mail with defined transport object
     await transporter.sendMail({
-        from: `LMS Skills <${process.env.SMTP_FROM_EMAIL}>`, // sender address
+        from: `LMS Skills <${config.smtpFromEmail}>`,
         to: email, // user email
         subject: subject, // Subject line
         html: message, // <-- Use html for better formatting
